@@ -1,0 +1,74 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.2'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'com.github.johnrengelman.shadow' version '8.1.1' // For creating fat JARs
+}
+
+group = 'com'
+version = '1.0.0'
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    // Spring Boot Core
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // AWS SDK
+    implementation 'software.amazon.awssdk:s3:2.30.13'
+    implementation 'software.amazon.awssdk:kms:2.30.13'
+    implementation 'software.amazon.awssdk:rds:2.30.13'
+    implementation 'software.amazon.awssdk:ssm:2.30.13'
+    implementation 'software.amazon.awssdk:secretsmanager:2.30.13'
+    implementation 'software.amazon.awssdk:sts:2.30.13'
+    implementation 'software.amazon.awssdk:auth:2.30.13'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+
+    // Database
+    implementation 'org.postgresql:postgresql'
+    implementation 'org.flywaydb:flyway-core' // For DB migrations
+
+    // Lombok (reduces boilerplate code)
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // Docker Support
+    implementation 'org.springframework.boot:spring-boot-docker-compose'
+
+    // Monitoring & Logging
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // API for creating and validating JWTs
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    // JJWT implementation
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    // JJWT Jackson support
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    // Testing
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+// Task to create a fat JAR for deployment
+tasks.register('fatJar', Jar) {
+    archiveClassifier.set('all')
+    from sourceSets.main.output
+    with jar
+}
