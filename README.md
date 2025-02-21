@@ -114,3 +114,9 @@ This project is a secure file storage solution built with Java, Spring Boot, and
   ```bash
   cd docker/postgres
   docker-compose up -d
+
+---
+
+## 📬 Contact
+
+**Dzmitry Ivaniuta** — [diafter@gmail.com](mailto:diafter@gmail.com) — [GitHub](https://github.com/DimitryIvaniuta)
