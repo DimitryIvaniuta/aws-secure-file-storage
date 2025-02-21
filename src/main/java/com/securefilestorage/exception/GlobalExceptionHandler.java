@@ -55,17 +55,6 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(HttpStatus.BAD_GATEWAY, ex.getMessage());
     }
 
-    /**
-     * Handles all unhandled exceptions.
-     *
-     * @param ex the Exception.
-     * @return ResponseEntity with error details.
-     */
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, Object>> handleGlobalException(Exception ex) {
-        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred.");
-    }
-
     @ExceptionHandler(SecretsMappingException.class)
     public ResponseEntity<Map<String, Object>> handleSecretsMappingException(Exception ex) {
         return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
@@ -114,4 +103,5 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("An unexpected error occurred: " + ex.getMessage());
     }
+
 }

@@ -38,7 +38,8 @@ dependencies {
 
     // Database
     implementation 'org.postgresql:postgresql'
-    implementation 'org.flywaydb:flyway-core' // For DB migrations
+    implementation 'org.flywaydb:flyway-core:11.3.0'
+    implementation 'org.flywaydb:flyway-database-postgresql:11.3.0'
 
     // Lombok (reduces boilerplate code)
     compileOnly 'org.projectlombok:lombok'
@@ -57,6 +58,10 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
     // JJWT Jackson support
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    // Jackson for JSON Serialization/Deserialization
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.2'
 
     // Testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

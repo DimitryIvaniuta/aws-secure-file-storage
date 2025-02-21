@@ -1,10 +1,10 @@
 package com.securefilestorage.config;
 
-import com.securefilestorage.config.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -45,11 +45,15 @@ public class SecurityConfig {
 
                 // Configure URL authorization
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()  // Allow login/register APIs
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()  // Swagger UI if you're using it
+                        .requestMatchers("/api/users/info",
+                                "/api/users/register",
+                                "/api/auth/**",
+                                "/favicon.ico").permitAll()  // Allow login/register APIs
+                        .requestMatchers("/swagger-ui/**",
+                                "/v3/api-docs/**").permitAll()  // Swagger UI if you're using it
                         .anyRequest().authenticated()
                 )
-                .httpBasic(AbstractHttpConfigurer::disable)
+                .httpBasic(Customizer.withDefaults())
                 // Add JWT Authentication Filter
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

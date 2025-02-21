@@ -23,8 +23,8 @@ public class User {
      * Primary Key.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "JP_UNIQUE_ID")
-    @SequenceGenerator(name = "JP_UNIQUE_ID", sequenceName = "JP_UNIQUE_ID", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AWS_STORAGE_UNIQUE_ID")
+    @SequenceGenerator(name = "AWS_STORAGE_UNIQUE_ID", sequenceName = "AWS_STORAGE_UNIQUE_ID", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
 

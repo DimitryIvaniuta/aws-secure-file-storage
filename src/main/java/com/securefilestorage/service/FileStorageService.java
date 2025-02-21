@@ -20,8 +20,11 @@ import software.amazon.awssdk.services.kms.model.KmsException;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
+import software.amazon.awssdk.services.s3.model.ListObjectsV2Response;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.S3Exception;
+import software.amazon.awssdk.services.s3.model.S3Object;
 import software.amazon.awssdk.services.ssm.SsmClient;
 import software.amazon.awssdk.services.ssm.model.GetParameterRequest;
 import software.amazon.awssdk.services.ssm.model.GetParameterResponse;
@@ -32,7 +35,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Handling file storage operations
@@ -127,6 +132,7 @@ public class FileStorageService {
             metadata.setFileName(file.getOriginalFilename());
             metadata.setUploadedAt(LocalDateTime.now());
             metadata.setBucketName(awsProperties.getS3().getBucketName());
+            metadata.setFileSize(file.getSize());
             fileMetadataRepository.save(metadata);
 
             log.info("File metadata stored successfully.");
@@ -207,6 +213,25 @@ public class FileStorageService {
             log.error("I/O error while processing file: {}", fileName, e);
             throw new FileStorageException("I/O error processing file: " + fileName, e);
         }
+    }
+
+    /**
+     * Lists the names of files in the S3 bucket.
+     *
+     * @return a List of file names.
+     */
+    public List<String> listFiles() {
+        ListObjectsV2Request request = ListObjectsV2Request.builder()
+                .bucket(awsProperties.getS3().getBucketName())
+                .build();
+
+        ListObjectsV2Response response = s3Client.listObjectsV2(request);
+
+        List<String> fileNames = response.contents().stream()
+                .map(S3Object::key).toList();
+
+        log.info("Retrieved {} files from bucket {}", fileNames.size(), awsProperties.getS3().getBucketName());
+        return fileNames;
     }
 
     /**

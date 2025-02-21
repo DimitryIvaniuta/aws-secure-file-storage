@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
 import java.util.Optional;
 
 /**
@@ -28,6 +29,7 @@ public class UserService {
      */
     public User registerUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setCreatedAt(ZonedDateTime.now());
         User savedUser = userRepository.save(user);
         log.info("User registered with login: {}", savedUser.getLogin());
         return savedUser;

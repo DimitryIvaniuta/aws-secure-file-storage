@@ -22,10 +22,10 @@ public class AwsSecretsManagerConfig {
                 .credentialsProvider(DefaultCredentialsProvider.create())
                 .build();
     }
-
+/*
     @Bean
     public ObjectMapper objectMapper() {
         return new ObjectMapper();
     }
-
+*/
 }

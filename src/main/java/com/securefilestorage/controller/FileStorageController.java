@@ -6,7 +6,6 @@ import com.securefilestorage.exception.FileStorageException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,11 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 /**
  * REST Controller for handling file storage operations with AWS S3 and KMS encryption.
@@ -54,7 +52,7 @@ public class FileStorageController {
     /**
      * Download file by name as bytes[] and decrypts a file from AWS S3.
      *
-     * @param fileName the name of the file to download.
+     * @param filename the name of the file to download.
      * @return the decrypted file as a byte array.
      */
     @GetMapping("/download/bytes/{filename}")
@@ -95,6 +93,18 @@ public class FileStorageController {
             log.error("Error reading file: {}", filename, e);
             throw new FileStorageException("Failed to read file: " + filename, e);
         }
+    }
+
+    /**
+     * Retrieves the list of uploaded files from AWS S3.
+     *
+     * @return a list of file names.
+     */
+    @GetMapping("/list")
+    public ResponseEntity<List<String>> listFiles() {
+        log.info("Received request to list files");
+        List<String> files = fileStorageService.listFiles();
+        return ResponseEntity.ok(files);
     }
 
     /**

@@ -6,5 +6,5 @@ CREATE TABLE file_metadata
     file_size   BIGINT       NOT NULL,
     s3_key      TEXT         NOT NULL,
     upload_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    uploaded_by TEXT,
+    uploaded_by TEXT
 );
