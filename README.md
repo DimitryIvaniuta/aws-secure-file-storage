@@ -238,7 +238,7 @@ This project is licensed under the [MIT License](LICENSE). You are free to modif
 
 ---
 
-## 📬 Contact
+## Contact
 
 **Dzmitry Ivaniuta** — [diafter@gmail.com](mailto:diafter@gmail.com) — [GitHub](https://github.com/DimitryIvaniuta)
 
